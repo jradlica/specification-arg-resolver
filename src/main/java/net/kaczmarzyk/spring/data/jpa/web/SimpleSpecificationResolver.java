@@ -105,17 +105,12 @@ class SimpleSpecificationResolver implements SpecificationResolver<Spec> {
 			}
 		} else {
 			try {
-				spec = def.spec().getConstructor(QueryContext.class, String.class, String[].class, Converter.class, String[].class)
-						.newInstance(queryCtx, def.path(), argsArray, converter, def.config());
-			} catch (NoSuchMethodException e) {
-				try {
-					spec = def.spec().getConstructor(QueryContext.class, String.class, String[].class, Converter.class)
-							.newInstance(queryCtx, def.path(), argsArray, converter);
-				} catch (NoSuchMethodException e2) {
-					// legacy constructor support, to retain backward-compatibility
-					spec = def.spec().getConstructor(String.class, String[].class, String[].class)
-							.newInstance(def.path(), argsArray, def.config());
-				}
+				spec = def.spec().getConstructor(QueryContext.class, String.class, String[].class, Converter.class)
+						.newInstance(queryCtx, def.path(), argsArray, converter);
+			} catch (NoSuchMethodException e2) {
+				// legacy constructor support, to retain backward-compatibility
+				spec = def.spec().getConstructor(String.class, String[].class, String[].class)
+						.newInstance(def.path(), argsArray, def.config());
 			}
 		}
 		return spec;

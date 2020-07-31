@@ -1,3 +1,8 @@
+v2.7.0
+======
+* Removed support for five-argument spec constructor.
+
+
 v2.6.1
 ======
 * fixed bug which caused invalid query to be created when multiple `@JoinFetch` annotations referenced the same alias

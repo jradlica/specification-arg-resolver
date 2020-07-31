@@ -129,22 +129,6 @@ public class SimpleSpecificationResolverSpecConstructorTest extends ResolverTest
 		assertThat(resolved.config).isEqualTo(new String[] { "yyyyMMdd" });
 	}
 
-	@Test
-	public void resolves5ArgsSpec() throws Exception {
-		MethodParameter param = MethodParameter.forExecutable(testMethod("methodWith5argSpec"), 0);
-		NativeWebRequest req = mock(NativeWebRequest.class);
-		when(req.getParameterValues("theParameter")).thenReturn(new String[] { "theValue" });
-
-		WebRequestProcessingContext ctx = new WebRequestProcessingContext(param, req);
-
-		SpecWith5ArgConstructor resolved = (SpecWith5ArgConstructor) resolver.buildSpecification(ctx, param.getParameterAnnotation(Spec.class));
-
-		assertThat(resolved.path).isEqualTo("thePath");
-		assertThat(resolved.args).isEqualTo(new String[] { "theValue" });
-		assertThat(resolved.converter).isEqualTo(Converter.withDateFormat("yyyyMMdd", OnTypeMismatch.EXCEPTION, null));
-		assertThat(resolved.config).isEqualTo(new String[] { "yyyyMMdd" });
-	}
-
 	public static class DummySpec implements Specification<Object> {
 		@Override
 		public Predicate toPredicate(Root<Object> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -171,8 +155,5 @@ public class SimpleSpecificationResolverSpecConstructorTest extends ResolverTest
 				@Spec(path = "thePath", params = "theParameter", spec = SpecWithLegacy3ArgConstructor.class, config = "yyyyMMdd", onTypeMismatch = EXCEPTION) Specification<Object> spec) {
 		}
 
-		public void methodWith5argSpec(
-				@Spec(path = "thePath", params = "theParameter", spec = SpecWith5ArgConstructor.class, config = "yyyyMMdd", onTypeMismatch = EXCEPTION) Specification<Object> spec) {
-		}
 	}
 }
